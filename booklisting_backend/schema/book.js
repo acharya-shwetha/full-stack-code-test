@@ -9,12 +9,12 @@ var BooksSchema = new Schema({
     authorId: { type: SchemaTypes.ObjectId, required: true, index: true, ref: 'authors' },
     },
     {
-        timestamps
+        timestamps: true
     }  
 );
   
   
-const Books = mongoose.model("clients", BooksSchema);
+const Books = mongoose.model("books", BooksSchema);
 
 module.exports = {
    Books

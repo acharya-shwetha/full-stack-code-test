@@ -8,7 +8,7 @@ var AuthorsSchema = new Schema({
     lastname: { type: String, required: true, index: true },
     },
     {
-        timestamps
+        timestamps: true
     }  
 );
   

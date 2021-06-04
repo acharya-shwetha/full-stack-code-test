@@ -19,4 +19,9 @@ var connectWithRetry = function() {
 }
 connectWithRetry();
 
+mongoose.connection.once('open', function(err) {
+    console.log("Connected to mongoose db");
+});
+
+
 module.exports = mongoose;
