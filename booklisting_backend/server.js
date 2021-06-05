@@ -56,9 +56,14 @@ app.post('/author', async function(request, response){
   response.send({authorInfo: authorData});   
 });
 
-app.post('/book', async function(request, response){     
-  let bookData = await addBook(request.body);
-  response.send({bookInfo: bookData});   
+app.post('/book', async function(request, response){ 
+  try{
+    let bookData = await addBook(request.body);
+    response.send({bookInfo: bookData}); 
+  } catch(err){
+    console.log(err.message);
+    response.send({bookInfo: {}});
+  }     
 });
 
 app.listen(port);
