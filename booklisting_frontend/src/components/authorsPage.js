@@ -38,6 +38,8 @@ const AuthorsPage = (props) => {
   return (
     <>
       <h1>Authors List</h1>
+      <br/>
+      <br/>
       { showData.authorList.map((data,index) => {
         if (data) {
           return (

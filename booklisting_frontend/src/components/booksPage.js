@@ -39,24 +39,26 @@ const BooksPage = (props) => {
   return (
     <>
       <h1>Books List</h1>
-      { showData.bookList.map((data,index) => {
-        if (data) {
+      <br/>
+      <br/>
+        { showData.bookList.map((data,index) => {
+          if (data) {
+            return (
+                <div key={`book-${data.bookId}`}>
+                  <BookCard 
+                  key={`book-${data.bookId}`}
+                  bookName = {data.name}
+                  bookId = {data.bookId}
+                  />
+                </div>
+          )	
+        } else {
           return (
-          <div key={`book-${data.bookId}`}>
-            <BookCard 
-            key={`book-${data.bookId}`}
-            bookName = {data.name}
-            bookId = {data.bookId}
-            />
-          </div>
-    	   )	
-    	 } else {
-        return (
-          <>
-          </>
-        )
-      }
-        }) }
+            <>
+            </>
+          )
+        }
+          }) }
     </>
    );
 }
