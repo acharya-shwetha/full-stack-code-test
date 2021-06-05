@@ -79,11 +79,39 @@ async function checkIfAuthorExist(authorId){
 }
 
 
+async function updateAuthor(authorId, authorData){
+    try{
+        let { firstName, lastName } = authorData;
+        let updateAuthorData = {
+            firstname: firstName,
+            lastname: lastName
+        }
+        let authorid = Buffer.from(authorId, "hex").toString("ascii");
+        let isAuthorExist = await checkIfAuthorExist(authorid);
+        if(!isAuthorExist){
+            throw new Error("Author doesn't exist");
+        }
+        let updateAuthorDoc =  await Authors.update({_id: ObjectId(authorid)},
+            {$set: updateAuthorData},
+            {new: true});
+
+        if(updateAuthorDoc && updateAuthorDoc.nModified == 1){
+            return true;
+        }
+        
+        return false;
+    }catch(err){
+        throw new Error(`Failed to update author: ${err.message}`);
+    }
+}
+
+
 
 module.exports = {
     getAuthors,
     getAuthorById,
     formatAuthors,
     addAuthor,
-    checkIfAuthorExist
+    checkIfAuthorExist,
+    updateAuthor
 }

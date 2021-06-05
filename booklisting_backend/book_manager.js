@@ -116,10 +116,54 @@ async function addBook(bookData){
     }
 }
 
+async function checkIfBookExist(bookId){
+    let bookData = await Books.findById(bookId);
+    if(bookData){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+async function updateBook(bookId, bookData){
+    try{
+        let { name, isbn, authorId } = bookData;
+        let bookid = Buffer.from(bookId, "hex").toString("ascii");
+        let isBookExist = await checkIfBookExist(bookid);
+        if(!isBookExist){
+            throw new Error("Book doesn't exist");
+        }
+
+        let authorid = Buffer.from(authorId, "hex").toString("ascii");
+        let isAuthorExist = await checkIfAuthorExist(authorid);
+        if(!isAuthorExist){
+            throw new Error("Author doesn't exist");
+        }
+        let updateBookData = {
+            name: name,
+            isbn: isbn,
+            authorId: ObjectId(authorid)
+        }
+
+        let updateBookDoc =  await Books.update({_id: ObjectId(bookid)},
+            {$set: updateBookData},
+            {new: true});
+
+        if(updateBookDoc && updateBookDoc.nModified == 1){
+            return true;
+        }
+        
+        return false;
+    }catch(err){
+        throw new Error(`Failed to update book: ${err.message}`);
+    }
+}
+
 
 module.exports = {
     getBooks,
     formatBooks,
     getBookById,
-    addBook
+    addBook,
+    updateBook
 }

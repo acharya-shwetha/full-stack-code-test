@@ -6,13 +6,15 @@ const mongoose = require("./mongo.js");
 const {
   getBooks,
   getBookById,
-  addBook
+  addBook,
+  updateBook
 } = require("./book_manager");
 
 const {
   getAuthors,
   getAuthorById,
-  addAuthor
+  addAuthor,
+  updateAuthor
 } = require("./author_manager");
 
 const port = process.env.PORT || 8080;        
@@ -51,9 +53,14 @@ app.get('/book/:id', async function (request, response) {
   }
 })
 
-app.post('/author', async function(request, response){     
-  let authorData = await addAuthor(request.body);
-  response.send({authorInfo: authorData});   
+app.post('/author', async function(request, response){  
+  try{
+    let authorData = await addAuthor(request.body);
+    response.send({authorInfo: authorData});   
+  } catch(err){
+    console.log(err.message);
+    response.send({authorInfo: {}});
+  }  
 });
 
 app.post('/book', async function(request, response){ 
@@ -64,6 +71,26 @@ app.post('/book', async function(request, response){
     console.log(err.message);
     response.send({bookInfo: {}});
   }     
+});
+
+app.put('/author/:id', async function(request, response){  
+  try{
+    let authorUpdateStatus = await updateAuthor(request.params.id, request.body);
+    response.send({authorUpdateStatus: authorUpdateStatus});   
+  } catch(err){
+    console.log(err.message);
+    response.send({authorUpdateStatus: false});
+  }  
+});
+
+app.put('/book/:id', async function(request, response){  
+  try{
+    let bookUpdateStatus = await updateBook(request.params.id, request.body);
+    response.send({bookUpdateStatus: bookUpdateStatus});   
+  } catch(err){
+    console.log(err.message);
+    response.send({bookUpdateStatus: false});
+  }  
 });
 
 app.listen(port);
