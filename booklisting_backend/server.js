@@ -4,11 +4,13 @@ const cors = require('cors');
 const mongoose = require("./mongo.js");
 
 const {
-  getBooks
+  getBooks,
+  getBookById
 } = require("./book_manager");
 
 const {
-  getAuthors
+  getAuthors,
+  getAuthorById
 } = require("./author_manager");
 
 const port = process.env.PORT || 8080;        
@@ -26,6 +28,25 @@ app.get('/books', async function (request, response) {
 app.get('/authors', async function (request, response) {
   let authors_list = await getAuthors();
   response.send({authorList: authors_list});
+})
+
+app.get('/author/:id', async function (request, response) {
+  if(request.params.id){
+    let authorData = await getAuthorById(request.params.id);
+    response.send({authorInfo: authorData});
+  }else {
+    throw new Error("Require authorId");
+  }
+})
+
+
+app.get('/book/:id', async function (request, response) {
+  if(request.params.id){
+    let bookData = await getBookById(request.params.id);
+    response.send({bookInfo: bookData});
+  }else {
+    throw new Error("Require bookId");
+  }
 })
 
 app.listen(port);
