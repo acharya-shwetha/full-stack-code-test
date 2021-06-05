@@ -5,12 +5,14 @@ const mongoose = require("./mongo.js");
 
 const {
   getBooks,
-  getBookById
+  getBookById,
+  addBook
 } = require("./book_manager");
 
 const {
   getAuthors,
-  getAuthorById
+  getAuthorById,
+  addAuthor
 } = require("./author_manager");
 
 const port = process.env.PORT || 8080;        
@@ -48,6 +50,16 @@ app.get('/book/:id', async function (request, response) {
     throw new Error("Require bookId");
   }
 })
+
+app.post('/author', async function(request, response){     
+  let authorData = await addAuthor(request.body);
+  response.send({authorInfo: authorData});   
+});
+
+app.post('/book', async function(request, response){     
+  let bookData = await addBook(request.body);
+  response.send({bookInfo: bookData});   
+});
 
 app.listen(port);
 console.log('listening to port ' + port);

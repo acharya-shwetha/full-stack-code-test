@@ -1,7 +1,7 @@
 const { Books } = require("./schema/book");
 const mongoose  = require("mongoose");
 const { ObjectId } = mongoose.Types;
-const { formatAuthors } = require("./author_manager");
+const { formatAuthors, checkIfAuthorExist } = require("./author_manager");
 
 async function formatBooks(books_list){
     try{
@@ -91,8 +91,35 @@ async function getBookById(bookId){
 }
 
 
+async function addBook(bookData){
+    try{
+        let { name, isbn, authorId } = bookData;
+        let authorid = Buffer.from(authorId, "hex").toString("ascii");
+        let isAuthorExist = await checkIfAuthorExist(authorid);
+        if(!isAuthorExist){
+            throw new Error('Author data not available');
+        }
+        let bookDoc =  new Books({name: name, isbn: isbn, authorId: ObjectId(authorid)});
+        const bookSaveData = await bookDoc.save();
+        if(!bookSaveData){
+            throw new Error(`Error in saving book details`);
+        }
+        let formattedBookData = {
+            bookId: Buffer.from(bookSaveData._id.toString(),"ascii").toString("hex"),
+            name: bookSaveData.name,
+            isbn: bookSaveData.isbn,
+            authorId: Buffer.from(bookSaveData.authorId.toString(),"ascii").toString("hex")
+        }
+        return formattedBookData;
+    }catch(err){
+        throw new Error(`Failed to add author: ${err.message}`);
+    }
+}
+
+
 module.exports = {
     getBooks,
     formatBooks,
-    getBookById
+    getBookById,
+    addBook
 }

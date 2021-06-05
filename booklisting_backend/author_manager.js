@@ -52,10 +52,38 @@ async function getAuthorById(authorId){
     }
 }
 
+async function addAuthor(authorData){
+    try{
+        let { firstName, lastName } = authorData;
+        
+        let authorDoc =  new Authors({firstname: firstName, lastname: lastName});
+        const authorSaveData = await authorDoc.save();
+        if(!authorSaveData){
+            throw new Error(`Error in saving author details`);
+        }
+        let formattedAuthorData = await formatAuthors(authorSaveData);
+        return formattedAuthorData;
+    }catch(err){
+        throw new Error(`Failed to add author: ${err.message}`);
+    }
+}
+
+
+async function checkIfAuthorExist(authorId){
+    let authorData = await Authors.findById(authorId);
+    if(authorData){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 
 
 module.exports = {
     getAuthors,
     getAuthorById,
-    formatAuthors
+    formatAuthors,
+    addAuthor,
+    checkIfAuthorExist
 }
