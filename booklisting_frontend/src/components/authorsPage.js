@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AuthorCard from "./AuthorCard";
 
 const AuthorsPage = (props) => {
@@ -38,6 +39,12 @@ const AuthorsPage = (props) => {
   return (
     <>
       <h1>Authors List</h1>
+      <Link to={`/dashboard`}>
+        <button style={{'margin-right':'16px'}}>Go back to dashboard</button>
+      </Link>
+      <Link to={`/author/add`}>
+        <button>Add Author</button>
+      </Link>
       <br/>
       <br/>
       { showData.authorList.map((data,index) => {

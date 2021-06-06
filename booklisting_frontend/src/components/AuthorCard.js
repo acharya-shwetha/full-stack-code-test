@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import AuthorModal from '../modal/authorModal';
+import editLogo from '../assets/editImg.png';
 
 const AuthorCard = ({
     authorFirstName,
@@ -53,6 +55,9 @@ const AuthorCard = ({
               onClick={handleClick}
               >
               {authorFirstName}</h2>
+              <Link to={`/author/edit/${authorId}`}>
+                <img className="edit-img" src={editLogo} alt="edit author"/>
+              </Link>
               {authorInfo.showAuthorData && (
                 <AuthorModal
                     authorData={authorInfo.authorData}
