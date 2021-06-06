@@ -40,7 +40,7 @@ const AuthorsPage = (props) => {
     <>
       <h1>Authors List</h1>
       <Link to={`/dashboard`}>
-        <button style={{'margin-right':'16px'}}>Go back to dashboard</button>
+        <button style={{'marginRight':'16px'}}>Go back to dashboard</button>
       </Link>
       <Link to={`/author/add`}>
         <button>Add Author</button>

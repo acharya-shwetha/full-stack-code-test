@@ -4,6 +4,7 @@ import { useParams, useHistory } from 'react-router-dom';
 const AddAuthor = (props) => {
     let { authorid = '' } = useParams();
     let history = useHistory();
+    const [errorFields, setErrorFields] = useState({firstName: false, lastName: false});
     const [formData, setFormData] = useState({firstName: "", lastName: ""});
     const [btnText, setBtnText] = useState(authorid? 'Save' : 'Add');
 
@@ -92,6 +93,26 @@ const AddAuthor = (props) => {
                .catch(error => console.log("Error while fetching author"));
             }
 
+        const submitReferenceForm = () => {
+            let errorItems = {firstName: false, lastName: false};
+            let submitData = formData;
+            let { firstName, lastName } = submitData;
+            if(!firstName){
+                errorItems.firstName = true
+            }
+            if(!lastName){
+                errorItems.lastName = true
+            }
+        
+            if (errorItems.firstName || errorItems.lastName) {
+                setErrorFields(errorItems);
+                return;
+            } else {
+                setErrorFields({firstName: false, lastName: false});
+                onFinalSubmit();
+            }
+        };
+
       const onFinalSubmit = async () => {
         let submitData = formData;
         if (authorid) {
@@ -119,6 +140,12 @@ const AddAuthor = (props) => {
             value={formData['firstName']}
             onChange={handleChange}
         />
+        {errorFields.firstName && (
+            <>
+                <br/>
+                <span className="error-class">Empty first name</span>
+            </>
+        )}
         <p>Enter author's last name:</p>
         <input
             type='text'
@@ -126,9 +153,15 @@ const AddAuthor = (props) => {
             value={formData['lastName']}
             onChange={handleChange}
         />
+        {errorFields.lastName && (
+            <>
+                <br/>
+                <span className="error-class">Empty last name</span>
+            </>
+        )}
         <p></p>
         <br/>
-        <button type="button" onClick={onFinalSubmit} >{btnText}</button>
+        <button type="button" onClick={submitReferenceForm} >{btnText}</button>
         </form>
     );
   }
