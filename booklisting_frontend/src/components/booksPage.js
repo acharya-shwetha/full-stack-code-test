@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import BookCard from "./BookCard";
 
 const BooksPage = (props) => {
@@ -39,6 +40,9 @@ const BooksPage = (props) => {
   return (
     <>
       <h1>Books List</h1>
+      <Link to={`/dashboard`}>
+        <button style={{'margin-right':'16px'}}>Go back to dashboard</button>
+      </Link>
       <br/>
       <br/>
         { showData.bookList.map((data,index) => {
