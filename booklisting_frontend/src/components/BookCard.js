@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import BookModal from '../modal/bookModal';
+import editLogo from '../assets/editImg.png';
 
 const BookCard = ({
     bookName,
@@ -52,6 +54,9 @@ const BookCard = ({
               onClick={handleClick}
               >
               {bookName}</h2>
+              <Link to={`/book/edit/${bookId}`}>
+                <img className="edit-img" src={editLogo} alt="edit book"/>
+              </Link>
               {bookInfo.showBookData && (
                 <BookModal
                     bookData={bookInfo.bookData}

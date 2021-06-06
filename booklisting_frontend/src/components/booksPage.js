@@ -43,6 +43,9 @@ const BooksPage = (props) => {
       <Link to={`/dashboard`}>
         <button style={{'margin-right':'16px'}}>Go back to dashboard</button>
       </Link>
+      <Link to={`/book/add`}>
+        <button>Add Book</button>
+      </Link>
       <br/>
       <br/>
         { showData.bookList.map((data,index) => {
