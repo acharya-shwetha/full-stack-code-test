@@ -4,7 +4,7 @@ import { useParams, useHistory } from 'react-router-dom';
 const AddBook = (props) => {
     let { bookid = '' } = useParams();
     let history = useHistory();
-    const [errorFields, setErrorFields] = useState({name: false, isbn: false});
+    const [errorFields, setErrorFields] = useState({name: false, isbn: false, authorId: false});
     const [formData, setFormData] = useState({name: "", isbn: "", authorId: ""});
     const [selectOptions, setSelectOptions] = useState([]);
     const [btnText, setBtnText] = useState(bookid? 'Save' : 'Add');
@@ -118,21 +118,25 @@ const AddBook = (props) => {
           }
 
           const submitReferenceForm = () => {
-            let errorItems = {name: false, isbn: false};
+            let errorItems = {name: false, isbn: false, authorId: false};
             let submitData = formData;
-            let { name, isbn } = submitData;
+            let { name, isbn, authorId } = submitData;
             if(!name){
                 errorItems.name = true
             }
             if(!isbn){
                 errorItems.isbn = true
             }
+
+            if(!authorId){
+              errorItems.authorId = true
+            }
         
-            if (errorItems.name || errorItems.isbn) {
+            if (errorItems.name || errorItems.isbn || errorItems.authorId) {
                 setErrorFields(errorItems);
                 return;
             } else {
-                setErrorFields({name: false, isbn: false});
+                setErrorFields({name: false, isbn: false, authorId: false});
                 onFinalSubmit();
             }
         };
@@ -190,7 +194,7 @@ const AddBook = (props) => {
           onChange={handleChange}
           name='authorId'
         >
-          <option disabled value="">Select</option>
+          <option disabled value="" selected={formData['authorId'] == ""}>Select</option>
           {selectOptions.map((ops, inx) => {
             return (
               <option value={ops.authorId} selected={ops.authorId == formData['authorId']}>
@@ -199,6 +203,12 @@ const AddBook = (props) => {
             );
           })}
         </select>
+        {errorFields.authorId && (
+            <>
+                <br/>
+                <span className="error-class">Select author</span>
+            </>
+        )}
         <p></p>
         <br/>
         <button type="button" onClick={submitReferenceForm} >{btnText}</button>
