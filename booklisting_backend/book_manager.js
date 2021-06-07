@@ -163,6 +163,7 @@ async function updateBook(bookId, bookData){
 module.exports = {
     getBooks,
     formatBooks,
+    formatBooksWithAuthorData,
     getBookById,
     addBook,
     updateBook
